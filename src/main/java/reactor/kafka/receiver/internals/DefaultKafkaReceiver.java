@@ -59,7 +59,6 @@ import reactor.kafka.receiver.ReceiverRecord;
 import reactor.kafka.receiver.KafkaReceiver;
 import reactor.kafka.receiver.ReceiverOffset;
 import reactor.kafka.receiver.ReceiverPartition;
-import reactor.kafka.receiver.errors.ReceiverExceptionHandler;
 import reactor.kafka.receiver.internals.CommittableBatch.CommitArgs;
 import reactor.kafka.sender.TransactionManager;
 
@@ -337,10 +336,7 @@ public class DefaultKafkaReceiver<K, V> implements KafkaReceiver<K, V>, Consumer
     }
 
     private void fail(Exception e) {
-        ReceiverExceptionHandler.ReceiverExceptionHandlerResponse exceptionHandlerResponse = receiverOptions.receiverExceptionHandler().handle(e);
-        if (ReceiverExceptionHandler.ReceiverExceptionHandlerResponse.FAIL.equals(exceptionHandlerResponse)) {
-            recordSubmission.error(e);
-        }
+        receiverOptions.receiverExceptionHandler().handle(recordSubmission, e);
     }
 
     private void dispose() {

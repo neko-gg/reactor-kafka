@@ -232,7 +232,7 @@ public interface ReceiverOptions<K, V> {
      * @return options instance with updated receiver exception handler
      */
     @NonNull
-    ReceiverOptions<K, V> receiverExceptionHandler(ReceiverExceptionHandler receiverExceptionHandler);
+    ReceiverOptions<K, V> receiverExceptionHandler(ReceiverExceptionHandler<K, V> receiverExceptionHandler);
 
     /**
      * Returns the configuration properties of the underlying {@link KafkaConsumer}.
@@ -375,7 +375,7 @@ public interface ReceiverOptions<K, V> {
      * @return Receiver Exception Handler for receiver errors
      */
     @NonNull
-    ReceiverExceptionHandler receiverExceptionHandler();
+    ReceiverExceptionHandler<K, V> receiverExceptionHandler();
 
     /**
      * Returns the {@link KafkaConsumer#subscribe(Collection, ConsumerRebalanceListener)},

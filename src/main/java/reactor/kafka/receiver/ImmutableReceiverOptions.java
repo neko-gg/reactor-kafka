@@ -54,7 +54,7 @@ class ImmutableReceiverOptions<K, V> implements ReceiverOptions<K, V> {
     private final Collection<TopicPartition> assignTopicPartitions;
     private final Pattern subscribePattern;
     private final Supplier<Scheduler> schedulerSupplier;
-    private final ReceiverExceptionHandler receiverExceptionHandler;
+    private final ReceiverExceptionHandler<K, V> receiverExceptionHandler;
 
     ImmutableReceiverOptions(ReceiverOptions<K, V> options) {
         this(
@@ -93,7 +93,7 @@ class ImmutableReceiverOptions<K, V> implements ReceiverOptions<K, V> {
         Collection<TopicPartition> partitions,
         Pattern pattern,
         Supplier<Scheduler> supplier,
-        ReceiverExceptionHandler receiverExceptionHandler
+        ReceiverExceptionHandler<K, V> receiverExceptionHandler
     ) {
         this.properties = new HashMap<>(properties);
         this.assignListeners = new ArrayList<>(assignListeners);
@@ -614,12 +614,12 @@ class ImmutableReceiverOptions<K, V> implements ReceiverOptions<K, V> {
     }
 
     @Override
-    public ReceiverExceptionHandler receiverExceptionHandler() {
+    public ReceiverExceptionHandler<K, V> receiverExceptionHandler() {
         return receiverExceptionHandler;
     }
 
     @Override
-    public ReceiverOptions<K, V> receiverExceptionHandler(ReceiverExceptionHandler receiverExceptionHandler) {
+    public ReceiverOptions<K, V> receiverExceptionHandler(ReceiverExceptionHandler<K, V> receiverExceptionHandler) {
         return new ImmutableReceiverOptions<>(
                 properties,
                 assignListeners,

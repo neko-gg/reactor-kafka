@@ -68,7 +68,7 @@ class MutableReceiverOptions<K, V> implements ReceiverOptions<K, V> {
     private Collection<TopicPartition> assignTopicPartitions;
     private Pattern subscribePattern;
     private Supplier<Scheduler> schedulerSupplier;
-    private ReceiverExceptionHandler receiverExceptionHandler;
+    private ReceiverExceptionHandler<K, V> receiverExceptionHandler;
 
     MutableReceiverOptions() {
         this(new HashMap<>());
@@ -534,7 +534,7 @@ class MutableReceiverOptions<K, V> implements ReceiverOptions<K, V> {
      * @return options instance with updated receiver exception handler
      */
     @Override
-    public ReceiverExceptionHandler receiverExceptionHandler() {
+    public ReceiverExceptionHandler<K, V> receiverExceptionHandler() {
         return receiverExceptionHandler;
     }
 
@@ -543,7 +543,7 @@ class MutableReceiverOptions<K, V> implements ReceiverOptions<K, V> {
      * @return Receiver Exception Handler for receiver errors
      */
     @Override
-    public ReceiverOptions<K, V> receiverExceptionHandler(ReceiverExceptionHandler receiverExceptionHandler) {
+    public ReceiverOptions<K, V> receiverExceptionHandler(ReceiverExceptionHandler<K, V> receiverExceptionHandler) {
         this.receiverExceptionHandler = receiverExceptionHandler;
         return this;
     }

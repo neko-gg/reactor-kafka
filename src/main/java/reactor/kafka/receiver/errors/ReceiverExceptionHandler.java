@@ -16,42 +16,20 @@
  */
 package reactor.kafka.receiver.errors;
 
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import reactor.core.publisher.FluxSink;
+
 /**
  * Interface that specifies how an exception thrown by Kafka Receiver
  * (e.g., failing to commit to Kafka) should be handled.
  */
-public interface ReceiverExceptionHandler {
+public interface ReceiverExceptionHandler<K, V> {
 
     /**
      * Inspect the exception received.
      *
-     * @param exception the actual exception
+     * @param recordSubmission
+     * @param exception        the actual exception
      */
-    ReceiverExceptionHandlerResponse handle(final Exception exception);
-
-    /**
-     * Enumeration that describes the response from the exception handler.
-     */
-    enum ReceiverExceptionHandlerResponse {
-        /* continue with processing */
-        CONTINUE(0, "CONTINUE"),
-        /* fail the processing and stop */
-        FAIL(1, "FAIL");
-
-        /**
-         * the permanent and immutable id of an API - this can't change ever
-         */
-        public final int id;
-
-        /**
-         * an english description of the api - this is for debugging and can change
-         */
-        public final String name;
-
-        ReceiverExceptionHandlerResponse(final int id, final String name) {
-            this.id = id;
-            this.name = name;
-        }
-    }
-
+    void handle(FluxSink<ConsumerRecords<K, V>> recordSubmission, final Exception exception);
 }

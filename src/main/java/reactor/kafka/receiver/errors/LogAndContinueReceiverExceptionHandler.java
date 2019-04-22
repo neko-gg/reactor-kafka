@@ -16,23 +16,22 @@
  */
 package reactor.kafka.receiver.errors;
 
+import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.FluxSink;
 
 /**
  * Receiver exception handler that logs an exception and then continues (without failing).
  */
-public class LogAndContinueReceiverExceptionHandler implements ReceiverExceptionHandler {
+public class LogAndContinueReceiverExceptionHandler<K, V> implements ReceiverExceptionHandler<K, V> {
 
     private static final Logger log = LoggerFactory.getLogger(LogAndContinueReceiverExceptionHandler.class);
 
     @Override
-    public ReceiverExceptionHandlerResponse handle(final Exception exception) {
+    public void handle(FluxSink<ConsumerRecords<K, V>> recordSubmission, Exception exception) {
         log.warn("Receiver exception caught: {}",
-                  exception.getLocalizedMessage(),
-                  exception);
-
-        return ReceiverExceptionHandlerResponse.CONTINUE;
+                exception.getLocalizedMessage(),
+                exception);
     }
-
 }
